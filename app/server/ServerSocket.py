@@ -12,5 +12,5 @@ else:
 server_socket.listen()
 conn, addr = server_socket.accept()
 
-msg = conn.recv(1024)
+msg = conn.recv(1024).decode()
 print(msg)
