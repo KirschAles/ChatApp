@@ -1,4 +1,5 @@
 import socket
+from ..common.ConnectedSocket import ConnectedSocket
 
 HOST = 'localhost'
 PORT = 5000
@@ -11,6 +12,6 @@ else:
 
 server_socket.listen()
 conn, addr = server_socket.accept()
-
+conn = ConnectedSocket(conn)
 msg = conn.recv(1024).decode()
 print(msg)
