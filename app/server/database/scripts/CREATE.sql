@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS message (
     message_id SERIAL NOT NULL,
     chat_id INTEGER NOT NULL,
     time_send TIMESTAMP,
-    message VARCHAR(1024)
+    message VARCHAR(1024),
     sender_id INTEGER NOT NULL
 );
 ALTER TABLE message ADD CONSTRAINT pk_message PRIMARY KEY (message_id);
