@@ -1,5 +1,5 @@
 
-INSERT_USER = '''INSERT INTO usser (user_id, username, password) VALUES (DEFAULT, '{0}', '{1}');'''
+INSERT_USER = '''INSERT INTO usser (user_id, username, password) VALUES (DEFAULT, '{0}', '{1}') RETURNING user_id;'''
 
 GET_CHAT = '''SELECT sender_id, time_send, message FROM message JOIN chat USING(chat_id)
               WHERE chat_id={0} ORDER BY time_send ASC;'''
