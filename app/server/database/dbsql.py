@@ -1,5 +1,5 @@
 import psycopg2
-
+import app.server.database.scripts.sql as script
 
 class Database:
     def __init__(self,
@@ -13,9 +13,9 @@ class Database:
         self.conn = psycopg2.connect(
             database=name, user=user, password=password, host=host, port=port
         )
-        cursor = self.conn.cursor()
-        cursor.execute(self._load_script(delete_path))
-        cursor.execute(self._load_script(create_path))
+        self.cursor = self.conn.cursor()
+        self.cursor.execute(self._load_script(delete_path))
+        self.cursor.execute(self._load_script(create_path))
 
     @staticmethod
     def _load_script(path: str):
