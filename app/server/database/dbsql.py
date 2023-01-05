@@ -19,9 +19,10 @@ class Database:
 
     @staticmethod
     def _load_script(path: str):
-        script = ''
-        with open(path, 'r', encoding='utf-8') as file:
-            script = file.read()
+        file = open(path, 'r', encoding='utf-8')
+        script = file.read()
+        file.close()
+        print(script)
         return script
 
 
