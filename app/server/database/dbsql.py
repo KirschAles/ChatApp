@@ -25,6 +25,45 @@ class Database:
         print(script)
         return script
 
+    def insert_user(self, username: str, password: str):
+        self.cursor.execute(script.INSERT_USER.format(username, password))
+
+    def get_username(self, user_id: int):
+        self.cursor.execute(script.GET_USERNAME.format(user_id))
+        return self.cursor.fetchone()[0]
+
+    def get_chat(self, chat_id: int):
+        self.cursor.execute(script.GET_CHAT.format(chat_id))
+        return self.cursor.fetchall()
+
+    def insert_message(self, chat_id: int, sender_id: int, message: str):
+        self.cursor.execute(script.INSERT_MESSAGE.format(chat_id, sender_id, message))
+
+    def _insert_user_chat(self, user_id: int, chat_id: int):
+        self.cursor.execute(script.INSERT_USER_CHAT.format(user_id, chat_id))
+
+    def insert_chat(self, user_ids: list):
+        self.cursor.execute(script.INSERT_CHAT)
+        chat_id = self.cursor.fetchone()[0]
+        for user_id in user_ids:
+            self._insert_user_chat(user_id, chat_id)
+        return chat_id
+
+    def get_chats(self):
+        self.cursor.execute(script.GET_CHATS)
+        return self.cursor.fetchall()
+
+    def get_users(self):
+        self.cursor.execute(script.GET_USERS)
+        return self.cursor.fetchall()
+
+    def get_messages(self):
+        self.cursor.execute(script.GET_MESSAGES)
+        return self.cursor.fetchall()
+
+    def get_user_chats(self):
+        self.cursor.execute(script.GET_USER_CHATS)
+        return self.cursor.fetchall()
 
 if __name__ == '__main__':
     Database()
