@@ -1,16 +1,17 @@
 import socket
-from .database.database import Database
-from ..common.ConnectedSocket import ConnectedSocket
+from typing import TextIO
+
+from app.server.database.dbsql import Database
 
 HOST = 'localhost'
 PORT = 5000
 BUFFER_SIZE = 4096
-COMMAND_SIZE = 3
 
-PUT = b'PUT'
-GET = b'GET'
-OK = 'OK'
 db = Database()
+
+
+def handle_request(reader: TextIO):
+    command = reader.readline(40).strip('\n').strip('\r')
 
 
 def main():
@@ -23,18 +24,9 @@ def main():
 
     try:
         while True:
-            conn = ConnectedSocket(server_socket.accept()[0])
-            request_type = conn.recv(3)
-            if request_type == GET:
-                conn.send(OK)
-                conn.send('\n')
-                conn.send(db.update())
-            elif request_type == PUT:
-                db.insert(conn.recv(2048).decode())
-                conn.send(OK)
-                conn.send('\n')
-            else:
-                conn.send('BAD\n')
+            conn = server_socket.accept()[0]
+            reader = conn.makefile('rw', buffering=BUFFER_SIZE, encoding='utf8')
+            handle_request(reader)
             conn.close()
     except KeyboardInterrupt:
         print("Ending Server.")
