@@ -1,0 +1,3 @@
+dropdb chat_db
+dropdb
+dropuser chat_user

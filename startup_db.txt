@@ -1,0 +1,4 @@
+initdb -E UTF8 -D over_data
+pg_ctl -D over_data -l logfile start
+createuser --encrypted --pwprompt chat_user
+createdb --owner=chat_user chat_db
