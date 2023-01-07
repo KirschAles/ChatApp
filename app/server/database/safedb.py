@@ -9,6 +9,7 @@ class SafeDatabase:
         return self.db.get_password(username) == password
 
     def belongs_to_chat(self, username, chat_id) -> bool:
+        # chat's existence must be checked before calling this method
         return (username,) in self.db.get_chat_members(chat_id)
 
     def is_chat_id_valid(self, chat_id) -> bool:
