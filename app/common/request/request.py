@@ -1,6 +1,5 @@
 from typing import TextIO
-import socket
-
+import app.common.headers as headers
 
 class Request:
     def __init__(self, reader: TextIO):
@@ -20,3 +19,6 @@ class Request:
     def build_request(self):
         self.command = self.reader.readline().strip('\n').strip('\r')
         self.build_headers()
+
+    def read_message(self):
+        message = self.reader.read(self.headers[headers.CONTENT_LENGTH])
