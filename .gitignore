@@ -5,5 +5,8 @@ __pycache__/
 # ignore pycharm files
 .idea/
 
+# ignore database
+logfile*
+over_data/
 # ignore file edits
 *~
