@@ -8,8 +8,7 @@ class RegisterRequest(ServerRequest):
     headers_needed = []
 
     def __init__(self, reader: TextIO, db: SafeDatabase):
-        self.super(self).__init__(reader, db)
+        super().__init__(reader, db)
 
     def execute(self):
         self.db.create_user(self.headers[headers.USERNAME], self.headers[headers.PASSWORD])
-

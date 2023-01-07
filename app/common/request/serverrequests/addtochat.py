@@ -8,9 +8,12 @@ class AddToChat(LoggedRequest):
     headers_needed = [headers.CHAT_ID, headers.TARGET_USERNAME]
 
     def __init__(self, reader: TextIO, db: SafeDatabase):
-        self.super(self).__init__(reader, db)
+        super().__init__(reader, db)
         if not self.has_all_headers():
             raise ValueError('Missing headers')
 
     def execute(self):
-        pass
+        adder = self.headers[headers.USERNAME]
+        added = self.headers[headers.TARGET_USERNAME]
+        chat_id = self.headers[headers.CHAT_ID]
+        self.db.add_to_chat(adder, chat_id, added)

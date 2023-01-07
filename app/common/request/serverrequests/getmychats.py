@@ -8,9 +8,10 @@ class GetMyChats(LoggedRequest):
     headers_needed = []
 
     def __init__(self, reader: TextIO, db: SafeDatabase):
-        self.super(self).__init__(reader, db)
+        super().__init__(reader, db)
+        self.return_message = []
         if not self.has_all_headers():
             raise ValueError('Missing headers')
 
     def execute(self):
-        pass
+        self.return_message = self.db.get_my_chats()
