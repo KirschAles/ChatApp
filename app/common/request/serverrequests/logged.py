@@ -9,5 +9,6 @@ class LoggedRequest(ServerRequest):
 
     def __init__(self, reader: TextIO, db: SafeDatabase):
         super().__init__(reader, db)
+        self.return_message = []
         if not db.is_password_right(self.headers[headers.USERNAME], self.headers[headers.PASSWORD]):
             raise ValueError('Wrong username or password.')
