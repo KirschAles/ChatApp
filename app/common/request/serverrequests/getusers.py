@@ -1,6 +1,16 @@
-from app.common.request.serverrequest import ServerRequest, Interface
+from app.common.request.serverrequests.logged import LoggedRequest
+from app.server.database.safedb import SafeDatabase
+from typing import TextIO
+import app.common.headers as headers
 
 
-class GetUsers(ServerRequest):
-    def __init__(self, conn, db: Interface):
-        super().__init__(conn, db)
+class GetUsers(LoggedRequest):
+    headers_needed = []
+
+    def __init__(self, reader: TextIO, db: SafeDatabase):
+        self.super(self).__init__(reader, db)
+        if not self.has_all_headers():
+            raise ValueError('Missing headers')
+
+    def execute(self):
+        pass
