@@ -52,3 +52,6 @@ class SafeDatabase:
 
     def get_my_chats(self) -> list:
         return self.db.get_my_chats()
+
+    def get_chat_members(self, chat_id) -> list:
+        return self.db.get_chat_members(chat_id)
