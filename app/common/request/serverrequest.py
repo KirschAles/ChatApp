@@ -3,10 +3,11 @@ from typing import TextIO
 
 import app.common.request.request as request
 from app.server.database.safedb import SafeDatabase
+import app.common.headers as headers
 
 
 class ServerRequest(request.Request):
-    headers_needed = []
+    headers_needed = [headers.USERNAME, headers.PASSWORD]
 
     def __init__(self, reader: TextIO, db: SafeDatabase):
         super().__init__(reader)
@@ -21,5 +22,8 @@ class ServerRequest(request.Request):
                 return False
         return True
 
+    def execute(self):
+        pass
+    
     def build_response(self):
         pass
