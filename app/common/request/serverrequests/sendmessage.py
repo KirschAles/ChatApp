@@ -11,3 +11,10 @@ class SendMessageRequest(LoggedRequest):
         self.super(self).__init__(reader, db)
         if not self.has_all_headers():
             raise ValueError('Missing headers')
+
+    def execute(self):
+        username = self.headers[headers.USERNAME]
+        chat_id = self.headers[headers.CHAT_ID]
+        message = self.read_message()
+        self.db.send_message(username, chat_id, message)
+    
