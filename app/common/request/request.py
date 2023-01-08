@@ -23,5 +23,5 @@ class Request:
         self.command = self.reader.readline().strip('\n').strip('\r')
         self.build_headers()
 
-    def read_message(self):
-        self.message = self.reader.read(self.headers[headers.CONTENT_LENGTH])
+    def read_message(self) -> str:
+        return self.reader.read(self.headers[headers.CONTENT_LENGTH])
