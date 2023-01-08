@@ -2,6 +2,8 @@ from app.common.request.serverrequest import ServerRequest
 from app.server.database.safedb import SafeDatabase
 from typing import TextIO
 import app.common.headers as headers
+from app.common.request.response import Response
+from app.common.clientcommands import OK
 
 
 class LoggedRequest(ServerRequest):
@@ -9,6 +11,5 @@ class LoggedRequest(ServerRequest):
 
     def __init__(self, reader: TextIO, db: SafeDatabase):
         super().__init__(reader, db)
-        self.return_message = []
         if not db.is_password_right(self.headers[headers.USERNAME], self.headers[headers.PASSWORD]):
             raise ValueError('Wrong username or password.')

@@ -1,11 +1,14 @@
 from typing import TextIO
 import app.common.headers as headers
 
+
 class Request:
     def __init__(self, reader: TextIO):
         self.reader = reader
         self.headers = {}
         self.buffer = []
+        self.message = ''
+        self.command = ''
 
     def build_header(self, line: str):
         header = line.split(':')
@@ -21,4 +24,4 @@ class Request:
         self.build_headers()
 
     def read_message(self):
-        message = self.reader.read(self.headers[headers.CONTENT_LENGTH])
+        self.message = self.reader.read(self.headers[headers.CONTENT_LENGTH])
