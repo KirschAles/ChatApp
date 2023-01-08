@@ -1,10 +1,13 @@
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QVBoxLayout
+from app.common.response.ClientResponse import ClientResponse
+import app.common.servercommands as cmd
+import app.common.headers as headers
 
 
 class ChatBox(QVBoxLayout):
-    def __init__(self):
+    def __init__(self, chat_id):
         super().__init__()
-        self.setWindowTitle("Chat")
+        self.chat_id = chat_id
         self.chat = QLabel()
         self.chat.setWordWrap(True)
         self.chat_write = QLineEdit()
@@ -16,5 +19,8 @@ class ChatBox(QVBoxLayout):
 
     def send_message(self):
         original_text = self.chat.text()
-        self.chat.setText(original_text + '\n' + self.chat_write.text())
         self.chat_write.setText('')
+        response = ClientResponse([original_text])
+        response.command = cmd.SEND_MESSAGE
+        response.headers[headers.CHAT_ID] = self.chat_id
+        
