@@ -11,6 +11,6 @@ app = QApplication(sys.argv)
 
 
 window = QMainWindow()
-QMainWindow.setCentralWidget()
+window.setCentralWidget(QWidget())
 window.show()
 app.exec()
