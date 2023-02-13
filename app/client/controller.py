@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton, QLabel, QVBoxLayout, QWidget
-from conversations import Conversations
+from app.client.gui.conversations import Conversations
 
 
 
