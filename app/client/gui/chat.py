@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QVBoxLayout
 from app.common.response.ClientResponse import ClientResponse
 import app.common.servercommands as cmd
 import app.common.headers as headers
+from app.client.connection.handler import handle_response
 
 
 class ChatBox(QVBoxLayout):
@@ -23,4 +24,5 @@ class ChatBox(QVBoxLayout):
         response = ClientResponse([original_text])
         response.command = cmd.SEND_MESSAGE
         response.headers[headers.CHAT_ID] = self.chat_id
-        
+        request = handle_response(response)
+
