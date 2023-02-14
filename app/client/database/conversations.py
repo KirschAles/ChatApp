@@ -1,4 +1,4 @@
-from chat import ChatDB
+from app.client.database.chat import ChatDB
 
 
 class ConvDB:
