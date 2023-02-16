@@ -25,9 +25,9 @@ class Conversations(QWidget):
         self.layout().addWidget(self._conv_widgets[new_id])
 
     def update_widget(self, chat_id: int):
-        button = QPushButton(str(self._db[self.chat_id].users))
-        self.chat_buttons.addButton(button, self.chat_id)
-        self._conv_widgets[self.chat_id] = button
+        button = QPushButton(str(self._db[chat_id].users))
+        self.chat_buttons.addButton(button, chat_id)
+        self._conv_widgets[chat_id] = button
 
     def load_chats(self):
         for chat in self._db:
