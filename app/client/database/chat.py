@@ -43,7 +43,7 @@ class ChatDB:
 
     @property
     def last_message(self) -> str:
-        return self._messages[0].text
+        return self._messages[0]
 
     @property
     def messages(self) -> list:
