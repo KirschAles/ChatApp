@@ -19,14 +19,14 @@ class MainWindow(QMainWindow):
 
     def start_chat_window(self, button):
         chat_id = self.conversations.chat_buttons.id(button)
-        chat = ChatBox(self.conv_db[chat_id])
+        chat = ChatBox(self.conv_db[chat_id], self.conv_db.username)
         self.setCentralWidget(chat)
         chat.back.clicked.connect(self.start_conversations_window)
 
 
 app = QApplication(sys.argv)
 
-conv_db = ConvDB()
+conv_db = ConvDB('username')
 window = MainWindow(conv_db)
 window.show()
 app.exec()

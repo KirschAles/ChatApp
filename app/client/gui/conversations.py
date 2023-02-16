@@ -4,7 +4,7 @@ from app.client.database.conversations import ConvDB
 
 class Conversations(QWidget):
 
-    def __init__(self, conv_db: ConvDB = ConvDB()):
+    def __init__(self, conv_db: ConvDB = ConvDB('username')):
         super().__init__()
         self.setLayout(QVBoxLayout())
         self._db = conv_db
