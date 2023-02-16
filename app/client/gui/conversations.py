@@ -2,11 +2,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QTextEdit, QButtonGroup, Q
 from app.client.database.conversations import ConvDB
 
 
-# temporary counter of conversation id, will be later replaced with request to server
-
-
 class Conversations(QWidget):
-    tmp_counter = 0
 
     def __init__(self, conv_db: ConvDB = ConvDB()):
         super().__init__()
@@ -22,19 +18,18 @@ class Conversations(QWidget):
         self.load_chats()
 
     def new_conversation(self):
-        self._db[self.tmp_counter] = [self.username_field.toPlainText()]
+        new_id = self._db.next_id() # temprorary, will later be found by request to server
+        self._db[new_id] = [self.username_field.toPlainText()]
         self.username_field.setText('')
-        self.update_widget(self.tmp_counter)
-        self.layout().addWidget(self._conv_widgets[self.tmp_counter])
-        self.tmp_counter += 1
+        self.update_widget(new_id)
+        self.layout().addWidget(self._conv_widgets[new_id])
 
-    def update_widget(self, id: int):
-        button = QPushButton(str(self._db[self.tmp_counter].users))
-        self.chat_buttons.addButton(button, self.tmp_counter)
-        self._conv_widgets[self.tmp_counter] = button
+    def update_widget(self, chat_id: int):
+        button = QPushButton(str(self._db[self.chat_id].users))
+        self.chat_buttons.addButton(button, self.chat_id)
+        self._conv_widgets[self.chat_id] = button
 
     def load_chats(self):
-        print('fdsfds')
         for chat in self._db:
             print(chat.id)
             button = QPushButton(str(chat.users))
