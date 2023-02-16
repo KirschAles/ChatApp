@@ -12,3 +12,6 @@ class ConvDB:
         self._chats[id] = ChatDB(id)
         for user in users:
             self._chats[id].add_user(user)
+
+    def __iter__(self):
+        return self._chats.values().__iter__()
