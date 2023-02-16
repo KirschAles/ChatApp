@@ -31,7 +31,6 @@ class Conversations(QWidget):
 
     def load_chats(self):
         for chat in self._db:
-            print(chat.id)
             button = QPushButton(str(chat.users))
             self.layout().addWidget(button)
             self.chat_buttons.addButton(button, chat.id)
