@@ -6,7 +6,7 @@ from app.client.database.conversations import ConvDB
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, conv_db):
+    def __init__(self, conv_db: ConvDB):
         super(MainWindow, self).__init__()
         self.conv_db = conv_db
         self.conversations = Conversations(self.conv_db)
