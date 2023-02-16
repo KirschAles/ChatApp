@@ -15,3 +15,6 @@ class ConvDB:
 
     def __iter__(self):
         return self._chats.values().__iter__()
+
+    def next_id(self) -> int:
+        return len(self._chats)
