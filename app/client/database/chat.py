@@ -25,6 +25,10 @@ class Message:
     def __lt__(self, other) -> bool:
         return self.time < other.time
 
+    def __str__(self) -> str:
+        return self.sender + ': ' + self.text
+
+
 
 class ChatDB:
     def __init__(self, chat_id: int):
