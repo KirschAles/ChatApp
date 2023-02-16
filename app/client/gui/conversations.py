@@ -19,6 +19,7 @@ class Conversations(QWidget):
         self.layout().addWidget(add_conv)
         self.layout().addWidget(self.username_field)
         self.chat_buttons = QButtonGroup()
+        self.load_chats()
 
     def new_conversation(self):
         self._db[self.tmp_counter] = [self.username_field.toPlainText()]
@@ -31,3 +32,12 @@ class Conversations(QWidget):
         button = QPushButton(str(self._db[self.tmp_counter].users))
         self.chat_buttons.addButton(button, self.tmp_counter)
         self._conv_widgets[self.tmp_counter] = button
+
+    def load_chats(self):
+        print('fdsfds')
+        for chat in self._db:
+            print(chat.id)
+            button = QPushButton(str(chat.users))
+            self.layout().addWidget(button)
+            self.chat_buttons.addButton(button, chat.id)
+            self._conv_widgets[chat.id] = button
