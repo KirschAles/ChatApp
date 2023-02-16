@@ -36,7 +36,8 @@ class ChatDB:
         self._users = []
         self._messages = []
 
-    def add_message(self, text: str, sender: str, time: datetime.datetime = datetime.datetime.now()) -> None:
+    def add_message(self, text: str, sender: str) -> None:
+        time = datetime.datetime.now()
         message = Message(text, sender, time)
         self._messages.append(message)
         self._messages.sort(reverse=True)
