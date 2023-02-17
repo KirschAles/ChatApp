@@ -29,5 +29,8 @@ class TextWithButton(QWidget):
         self.layout.addWidget(self.text_field)
         self.layout.addWidget(self.button)
 
-    def text(self):
+    def text(self) -> str:
         return self.text_field.text()
+
+    def clear(self) -> None:
+        self.text_field.setText('')
