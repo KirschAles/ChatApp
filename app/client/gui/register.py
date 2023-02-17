@@ -1,4 +1,4 @@
-from widgets import DataEntry
+from app.client.gui.widgets import DataEntry
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 
 
