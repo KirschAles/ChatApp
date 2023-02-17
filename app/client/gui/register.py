@@ -6,7 +6,7 @@ class Register(QWidget):
     def __init__(self):
         super(Register, self).__init__()
         self._layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        self.setLayout(self._layout)
 
         self._username = DataEntry('username')
         self._password_first = DataEntry('password')
