@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
         self.conv_db = conv_db
         self.conversations = Conversations(self.conv_db)
         self.login = None
+        self.register = None
         self.start_login_window()
 
     def start_conversations_window(self):
@@ -39,9 +40,16 @@ class MainWindow(QMainWindow):
         self.login.register.clicked.connect(self.start_register_window)
 
     def start_register_window(self):
-        register = Register()
-        self.setCentralWidget(register)
-        register.back.clicked.connect(self.start_login_window)
+        self.register = Register()
+        self.setCentralWidget(self.register)
+        self.register.back.clicked.connect(self.start_login_window)
+        self.register.register.clicked.connect(self.register_user)
+
+    def register_user(self) -> None:
+        if self.register.are_passwords_equal():
+            self.start_login_window()
+        else:
+            self.register.clear_password()
 
 
 app = QApplication(sys.argv)
