@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QTextEdit, QButtonGroup, QWidget
 from app.client.database.conversations import ConvDB
-
+from app.client.gui.widgets import TextWithButton
 
 class Conversations(QWidget):
 
@@ -9,18 +9,15 @@ class Conversations(QWidget):
         self.setLayout(QVBoxLayout())
         self._db = conv_db
         self._conv_widgets = {}
-        add_conv = QPushButton('Add conversation')
-        add_conv.clicked.connect(self.new_conversation)
-        self.username_field = QTextEdit()
-        self.layout().addWidget(add_conv)
-        self.layout().addWidget(self.username_field)
+        self.add_conv = TextWithButton('Add conversation')
+        self.add_conv.button.clicked.connect(self.new_conversation)
+        self.layout().addWidget(self.add_conv)
         self.chat_buttons = QButtonGroup()
         self.load_chats()
 
     def new_conversation(self):
         new_id = self._db.next_id() # temprorary, will later be found by request to server
-        self._db[new_id] = [self.username_field.toPlainText()]
-        self.username_field.setText('')
+        self._db[new_id] = [self.add_conv.text()]
         self.update_widget(new_id)
         self.layout().addWidget(self._conv_widgets[new_id])
 
