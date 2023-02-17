@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QTextEdit, QPushButton, QHBoxLayout, QLabel
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QLabel, QLineEdit
 
 
 class DataEntry(QWidget):
@@ -7,13 +7,13 @@ class DataEntry(QWidget):
         super(DataEntry, self).__init__()
         self.setLayout(QVBoxLayout())
         self.label = QLabel(label)
-        self.field = QTextEdit()
+        self.field = QLineEdit()
         self.layout().addWidget(self.label)
         self.layout().addWidget(self.field)
 
     def text(self):
         # using cpp style text() to be style compliant with other pyqt5 widgets
-        return self.field.toPlainText()
+        return self.field.text()
 
     def clear(self):
         self.field.setText('')
