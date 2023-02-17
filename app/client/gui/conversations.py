@@ -18,6 +18,7 @@ class Conversations(QWidget):
     def new_conversation(self):
         new_id = self._db.next_id() # temprorary, will later be found by request to server
         self._db[new_id] = [self.add_conv.text()]
+        self.add_conv.clear()
         self.update_widget(new_id)
         self.layout().addWidget(self._conv_widgets[new_id])
 
