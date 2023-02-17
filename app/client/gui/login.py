@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QWidget, QTextEdit, QPushButton, QHBoxL
 class DataEntry(QWidget):
     def __init__(self, label):
         super(DataEntry, self).__init__()
-        self.setLayout(QVBoxLayout)
+        self.setLayout(QVBoxLayout())
         self.label = QLabel(label)
         self.field = QTextEdit()
         self.layout().addWidget(self.label)
@@ -22,7 +22,7 @@ class DataEntry(QWidget):
 class Login(QWidget):
     def __init__(self):
         super(Login, self).__init__()
-        self.setLayout(QVBoxLayout)
+        self.setLayout(QVBoxLayout())
         self.title = QLabel('LOGIN')
         self.title.setFont(QFont('Arial', 30))
         self.add_widget(self.title)
