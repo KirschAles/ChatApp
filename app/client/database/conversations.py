@@ -2,9 +2,10 @@ from app.client.database.chat import ChatDB
 
 
 class ConvDB:
-    def __init__(self, username: str):
+    def __init__(self, username: str = '', password: str = ''):
         self._chats = {}
         self._username = username
+        self._password = password
 
     def __getitem__(self, id: int):
         return self._chats[id]
@@ -24,3 +25,7 @@ class ConvDB:
     @property
     def username(self):
         return self._username
+
+    @property
+    def password(self):
+        return self._password
