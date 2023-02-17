@@ -26,8 +26,8 @@ class MainWindow(QMainWindow):
         chat.back.clicked.connect(self.start_conversations_window)
 
     def login_user(self):
-        username = self.login.username.text()
-        password = self.login.password.text()
+        username = self.login.username
+        password = self.login.password
         self.conv_db = ConvDB(username, password)
         self.start_conversations_window()
 

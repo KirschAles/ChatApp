@@ -7,19 +7,26 @@ class Login(QWidget):
     def __init__(self):
         super(Login, self).__init__()
         self.setLayout(QVBoxLayout())
-        self.title = QLabel('LOGIN')
-        self.title.setFont(QFont('Arial', 30))
-        self.add_widget(self.title)
-        self.username = DataEntry('username')
-        self.password = DataEntry('password')
-        self.add_widget(self.username)
-        self.add_widget(self.password)
+        self._title = QLabel('LOGIN')
+        self._title.setFont(QFont('Arial', 30))
+        self._add_widget(self._title)
+        self._username = DataEntry('username')
+        self._password = DataEntry('password')
+        self._add_widget(self._username)
+        self._add_widget(self._password)
 
         self.login = QPushButton('Login')
         self.register = QPushButton('Register')
-        self.add_widget(self.login)
-        self.add_widget(self.register)
+        self._add_widget(self.login)
+        self._add_widget(self.register)
 
-    def add_widget(self, widget: QWidget) -> None:
+    def _add_widget(self, widget: QWidget) -> None:
         self.layout().addWidget(widget)
 
+    @property
+    def username(self) -> str:
+        return self._username.text()
+
+    @property
+    def password(self) -> str:
+        return self._password.text()
