@@ -4,6 +4,7 @@ from app.client.gui.conversations import Conversations
 from app.client.gui.chat import ChatBox
 from app.client.database.conversations import ConvDB
 from app.client.gui.login import Login
+from app.client.gui.register import Register
 
 
 class MainWindow(QMainWindow):
@@ -35,6 +36,12 @@ class MainWindow(QMainWindow):
         self.login = Login()
         self.setCentralWidget(self.login)
         self.login.login.clicked.connect(self.login_user)
+        self.login.register.clicked.connect(self.start_register_window)
+
+    def start_register_window(self):
+        register = Register()
+        self.setCentralWidget(register)
+        register.back.clicked.connect(self.start_login_window)
 
 
 app = QApplication(sys.argv)
