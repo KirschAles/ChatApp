@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton
 
 
 class DataEntry(QWidget):
@@ -16,3 +16,18 @@ class DataEntry(QWidget):
 
     def clear(self):
         self.field.setText('')
+
+
+class TextWithButton(QWidget):
+    def __init__(self, button_text: str):
+        super(TextWithButton, self).__init__()
+        self.layout = QHBoxLayout()
+        self.setLayout(self.layout)
+
+        self.button = QPushButton(button_text)
+        self.text_field = QLineEdit()
+        self.layout.addWidget(self.text_field)
+        self.layout.addWidget(self.button)
+
+    def text(self):
+        return self.text_field.text()
