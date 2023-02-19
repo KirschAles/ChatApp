@@ -1,3 +1,5 @@
+from typing import TextIO
+
 
 class RequestFormat:
     def __init__(self):
@@ -10,3 +12,10 @@ class RequestFormat:
 
     def __getitem__(self, item: str):
         return self._headers[item]
+
+    def send(self, writer: TextIO):
+        writer.write(self.command + '\n')
+        for key, value in self._headers:
+            writer.write(key + ': ' + value + '\n')
+        writer.write('\n')
+        writer.write(self.message)
