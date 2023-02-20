@@ -5,6 +5,20 @@ from app.client.gui.chat import ChatBox
 from app.client.database.conversations import ConvDB
 from app.client.gui.login import Login
 from app.client.gui.register import Register
+from app.common.request.requestformat import RequestFormat
+import app.common.servercommands as cmd
+import app.common.headers as headers
+from app.client.connection.connection import Connection
+
+
+def handle_login(username: str, password: str):
+    request = RequestFormat()
+    request.command = cmd.LIST_MY_CHATS
+    request[headers.USERNAME] = username
+    request[headers.PASSWORD] = password
+    conn = Connection()
+    conn.send(request.build_header_message())
+    conn.send(request.message)
 
 
 class MainWindow(QMainWindow):
@@ -31,6 +45,7 @@ class MainWindow(QMainWindow):
         username = self.login.username
         password = self.login.password
         self.conv_db = ConvDB(username, password)
+        handle_login(username, password)
         self.start_conversations_window()
 
     def start_login_window(self):
