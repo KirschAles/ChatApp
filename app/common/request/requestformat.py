@@ -1,4 +1,4 @@
-from typing import TextIO
+import socket
 
 
 class RequestFormat:
@@ -13,9 +13,9 @@ class RequestFormat:
     def __getitem__(self, item: str):
         return self._headers[item]
 
-    def send(self, writer: TextIO):
-        writer.write(self.command + '\n')
-        for key, value in self._headers:
-            writer.write(key + ': ' + value + '\n')
-        writer.write('\n')
-        writer.write(self.message)
+    def build_header_message(self) -> str:
+        msg = self.command + '\n'
+        for key, value in self._headers.items():
+            msg += key + ': ' + value + '\n'
+        msg += '\n'
+        return msg
