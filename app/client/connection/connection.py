@@ -48,8 +48,6 @@ class Connection:
         self.remainder = self.remainder[min(len(message), len(self.remainder)):]
         return str(message)
 
-
-
     @property
     def writer(self):
         return self._sock.makefile('w')
@@ -57,6 +55,5 @@ class Connection:
     @property
     def reader(self):
         return self._sock.makefile('r')
-
 
 
