@@ -1,4 +1,5 @@
 import socket
+import app.common.headers as headers
 
 
 class RequestFormat:
@@ -19,3 +20,22 @@ class RequestFormat:
             msg += key + ': ' + value + '\n'
         msg += '\n'
         return msg
+
+    def build_structure(self, string: str):
+        lines = string.split('\n')
+        self.command = lines[0]
+        for line in lines[1:]:
+            if len(line) == 0:
+                continue
+            header = line.split(': ')
+            self[header[0]] = self[header[1]]
+
+    @property
+    def success(self):
+        return self.command != 'BAD'
+
+    @property
+    def message_length(self):
+        if headers.CONTENT_LENGTH in self._headers.keys():
+            return self[headers.CONTENT_LENGTH]
+        return 0

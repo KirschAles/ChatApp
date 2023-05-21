@@ -58,7 +58,7 @@ def main():
     try:
         while True:
             conn = server_socket.accept()[0]
-            reader = conn.makefile('rw', buffering=BUFFER_SIZE, encoding='utf8')
+            reader = conn.makefile('rw', buffering=BUFFER_SIZE, encoding='utf-8')
             handle_request(reader)
             reader.close()
             conn.close()

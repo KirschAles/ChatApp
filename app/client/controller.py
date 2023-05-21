@@ -1,3 +1,4 @@
+import socket
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton, QLabel, QVBoxLayout, QWidget
 from app.client.gui.conversations import Conversations
@@ -11,7 +12,11 @@ import app.common.headers as headers
 from app.client.connection.connection import Connection
 
 
-def handle_login(username: str, password: str):
+def get_headers(conn: Connection, request: RequestFormat):
+    request.build_structure(conn.recv_until('\n\n'))
+
+
+def handle_login(username: str, password: str) -> bool:
     request = RequestFormat()
     request.command = cmd.LIST_MY_CHATS
     request[headers.USERNAME] = username
@@ -19,6 +24,28 @@ def handle_login(username: str, password: str):
     conn = Connection()
     conn.send(request.build_header_message())
     conn.send(request.message)
+
+    request = RequestFormat()
+    request.build_structure(conn.recv_until('\n\n'))
+    request.message = conn.recv_n_bytes(request.message_length)
+    print(request.command)
+    return request.success
+
+
+def handle_register(username: str, password: str):
+    request = RequestFormat()
+    request.command = cmd.REGISTER_USER
+    request[headers.USERNAME] = username
+    request[headers.headers.PASSWORD] = password
+    conn = Connection()
+    conn.send(request.build_header_message())
+    conn.send(request.message)
+
+    request = RequestFormat()
+    request.build_structure(conn.recv_until('\n\n'))
+    request.message = conn.recv_n_bytes(request.message_length)
+    print(request.command)
+    return request.success
 
 
 class MainWindow(QMainWindow):
