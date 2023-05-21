@@ -9,7 +9,7 @@ from app.client.gui.register import Register
 from app.common.request.requestformat import RequestFormat
 import app.common.servercommands as cmd
 import app.common.headers as headers
-from app.client.connection.connection import Connection
+from app.client.connection.testconnection import Connection
 
 
 def get_headers(conn: Connection, request: RequestFormat):
