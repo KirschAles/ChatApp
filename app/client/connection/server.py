@@ -1,7 +1,10 @@
 """
 Module for interacting with the Server
 """
-from testconnection import Connection
+from app.client.connection.testconnection import Connection
+from app.common.request.requestformat import RequestFormat
+import app.common.headers as headers
+import app.common.servercommands as cmd
 
 HOST = 'localhost'
 PORT = 5000
@@ -22,11 +25,22 @@ class Server:
     def get_connection(self):
         return Connection(self.host, self.port)
 
+    def get_request(self):
+        request = RequestFormat()
+        request[headers.USERNAME] = self.username
+        request[headers.PASSWORD] = self.password
+        return request
+
+    def ready_communication(self):
+        return self.get_connection(), self.get_request()
+
     def register(self, username: str, password: str):
-        conn = self.get_connection()
+        conn, request = self.ready_communication()
+        request.command = cmd.REGISTER_USER
 
     def get_chats(self):
-        conn = self.get_connection()
+        conn, request = self.ready_communication()
+        request.command = cmd.LIST_MY_CHATS
 
     def login(self, username: str, password: str):
         self.username = ""
@@ -34,15 +48,22 @@ class Server:
         return self.get_chats()
 
     def create_chat(self):
-        conn = self.get_connection()
+        conn, request = self.ready_communication()
+        request.command = cmd.CREATE_CHAT
 
     def add_to_chat(self, username: str, chat_id: int):
-        conn = self.get_connection()
+        conn, request = self.ready_communication()
+        request.command = cmd.ADD_USER_TO_CHAT
+        request[headers.TARGET_USERNAME] = username
+        request[headers.CHAT_ID] = chat_id
 
     def create_chat_with(self, username: str):
-        conn = self.get_connection()
+        conn, request = self.ready_communication()
+        chat_id = self.create_chat()
+        self.add_to_chat(username, chat_id)
 
     def send_message(self, chat_id: int, msg: str):
-        conn = self.get_connection()
-
+        conn, request = self.ready_communication()
+        request.command = cmd.SEND_MESSAGE
+        request[headers.CHAT_ID] = chat_id
 
