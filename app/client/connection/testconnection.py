@@ -8,7 +8,7 @@ PORT = 5000
 BUFFSIZE = 1024
 
 
-class TestConnection:
+class Connection:
     def __init__(self, host: str = HOST, port: int = PORT):
         self.remainder = ""
 
