@@ -7,6 +7,7 @@ class RequestFormat:
         self.command = ''
         self._headers = {}
         self.message = ''
+        self[headers.CONTENT_LENGTH] = str(len(self.message))
 
     def __setitem__(self, key: str, value: str):
         self._headers[key] = value
@@ -30,12 +31,16 @@ class RequestFormat:
             header = line.split(': ')
             self[header[0]] = self[header[1]]
 
+    def add_message(self, msg: str):
+        self.message = msg
+        self[headers.CONTENT_LENGTH] = str(len(msg))
+
     @property
     def success(self):
         return self.command != 'BAD'
 
     @property
-    def message_length(self):
+    def message_length(self) -> int:
         if headers.CONTENT_LENGTH in self._headers.keys():
-            return self[headers.CONTENT_LENGTH]
+            return int(self[headers.CONTENT_LENGTH])
         return 0
