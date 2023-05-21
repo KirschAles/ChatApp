@@ -44,3 +44,6 @@ class RequestFormat:
         if headers.CONTENT_LENGTH in self._headers.keys():
             return int(self[headers.CONTENT_LENGTH])
         return 0
+
+    def __str__(self):
+        return self.build_header_message() + self.message
