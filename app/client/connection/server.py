@@ -107,4 +107,33 @@ class Server:
         response = recv_response(conn)
         return response.success
 
+    def get_messages(self, chat_id: int) -> str:
+        conn, request = self.ready_communication()
+        request.command = cmd.LIST_MESSAGES_IN_CHAT
+        request[headers.CHAT_ID] = str(chat_id)
+        send_request(conn, request)
+        response = recv_response(conn)
+        if response.success:
+            return response.message
+        raise Exception
+
+    def get_users(self) -> str:
+        conn, request = self.ready_communication()
+        request.command = cmd.LIST_USERS
+        send_request(conn, request)
+        response = recv_response(conn)
+        if response.success:
+            return response.message
+        raise Exception
+    
+    def get_user_in_chat(self, chat_id: int):
+        conn, request = self.ready_communication()
+        request.command = cmd.LIST_USERS_IN_CHAT
+        request[headers.CHAT_ID] = str(chat_id)
+        send_request(conn, request)
+        response = recv_response(conn)
+        if response.success:
+            return response.message
+        raise Exception
+
 
