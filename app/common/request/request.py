@@ -16,8 +16,9 @@ class Request:
 
     def build_headers(self):
         line = self.reader.readline().strip('\n').strip('\r')
-        while line:
+        while line != "":
             self.build_header(line)
+            line = self.reader.readline().strip('\n').strip('\r')
 
     def build_request(self):
         self.command = self.reader.readline().strip('\n').strip('\r')
