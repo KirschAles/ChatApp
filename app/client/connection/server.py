@@ -102,7 +102,9 @@ class Server:
         conn, request = self.ready_communication()
         request.command = cmd.SEND_MESSAGE
         request[headers.CHAT_ID] = str(chat_id)
+        request.add_message(msg)
         send_request(conn, request)
         response = recv_response(conn)
         return response.success
+
 
