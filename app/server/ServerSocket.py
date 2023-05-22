@@ -41,23 +41,21 @@ def get_request(command: str, reader: TextIO):
 
 def handle_request(reader: TextIO):
     command = reader.readline(40).strip('\n').strip('\r')
+    print(command)
     request = get_request(command, reader)
-    request.build_request()
     request.execute()
     request.send_response()
 
 
 def main():
-    if socket.has_dualstack_ipv6():
-        server_socket = socket.create_server((HOST, PORT), family=socket.AF_INET6, dualstack_ipv6=True)
-    else:
-        server_socket = socket.create_server((HOST, PORT))
+
+    server_socket = socket.create_server((HOST, PORT))
 
     server_socket.listen()
-
     try:
         while True:
             conn = server_socket.accept()[0]
+            conn.settimeout(5)
             reader = conn.makefile('rw', buffering=BUFFER_SIZE, encoding='utf-8')
             handle_request(reader)
             reader.close()
