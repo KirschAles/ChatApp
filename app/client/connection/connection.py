@@ -28,7 +28,7 @@ class Connection:
             message += self._sock.recv(BUFFSIZE)
             index = message.find(until_bytes)
         self.remainder = message[index + len(until_bytes):]
-        return str(message[:index + len(until_bytes)])
+        return str(message[:index + len(until_bytes)], 'utf-8')
 
     def recv_n_bytes(self, n):
         message = self.remainder
@@ -37,7 +37,7 @@ class Connection:
             message += self._sock.recv(buffer)
 
         self.remainder = message[n:]
-        return str(message[:n])
+        return str(message[:n], 'utf-8')
 
     @property
     def writer(self):
