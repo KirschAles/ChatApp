@@ -9,43 +9,7 @@ from app.client.gui.register import Register
 from app.common.request.requestformat import RequestFormat
 import app.common.servercommands as cmd
 import app.common.headers as headers
-from app.client.connection.testconnection import Connection
-
-
-def get_headers(conn: Connection, request: RequestFormat):
-    request.build_structure(conn.recv_until('\n\n'))
-
-
-def handle_login(username: str, password: str) -> bool:
-    request = RequestFormat()
-    request.command = cmd.LIST_MY_CHATS
-    request[headers.USERNAME] = username
-    request[headers.PASSWORD] = password
-    conn = Connection()
-    conn.send(request.build_header_message())
-    conn.send(request.message)
-
-    request = RequestFormat()
-    request.build_structure(conn.recv_until('\n\n'))
-    request.message = conn.recv_n_bytes(request.message_length)
-    print(request.command)
-    return request.success
-
-
-def handle_register(username: str, password: str):
-    request = RequestFormat()
-    request.command = cmd.REGISTER_USER
-    request[headers.USERNAME] = username
-    request[headers.headers.PASSWORD] = password
-    conn = Connection()
-    conn.send(request.build_header_message())
-    conn.send(request.message)
-
-    request = RequestFormat()
-    request.build_structure(conn.recv_until('\n\n'))
-    request.message = conn.recv_n_bytes(request.message_length)
-    print(request.command)
-    return request.success
+from app.client.connection.server import Server
 
 
 class MainWindow(QMainWindow):
@@ -53,9 +17,16 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.conv_db = conv_db
         self.conversations = Conversations(self.conv_db)
+        self.server = Server()
         self.login = None
         self.register = None
         self.start_login_window()
+
+    def handle_login(self, username: str, password: str) -> bool:
+        return self.server.login(username, password)
+
+    def handle_register(self, username: str, password: str):
+        return self.server.register(username, password)
 
     def start_conversations_window(self):
         self.conversations = Conversations(self.conv_db)
@@ -72,7 +43,7 @@ class MainWindow(QMainWindow):
         username = self.login.username
         password = self.login.password
         self.conv_db = ConvDB(username, password)
-        handle_login(username, password)
+        self.handle_login(username, password)
         self.start_conversations_window()
 
     def start_login_window(self):

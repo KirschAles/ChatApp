@@ -125,7 +125,7 @@ class Server:
         if response.success:
             return response.message
         raise Exception
-    
+
     def get_user_in_chat(self, chat_id: int):
         conn, request = self.ready_communication()
         request.command = cmd.LIST_USERS_IN_CHAT
