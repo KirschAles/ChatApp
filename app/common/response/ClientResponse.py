@@ -27,10 +27,10 @@ class ClientResponse:
             self.final_message += str(part)
 
     def build_response(self):
-        self.build_header_strings()
         self.build_message()
+        self.build_header_strings()
 
     def send_response(self):
-        self.writer.write(self.command)
+        self.writer.write(self.command + "\n")
         self.writer.write(self.header_string)
         self.writer.write(self.final_message)
