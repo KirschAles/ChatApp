@@ -17,7 +17,7 @@ INSERT_CHAT = 'INSERT INTO chat (chat_id) VALUES (DEFAULT) RETURNING chat_id;'
 GET_CHAT_MEMBERS = '''SELECT usser.username FROM usser JOIN user_chat USING(user_id) JOIN chat USING(chat_id)
                       WHERE chat.chat_id={0}'''
 
-GET_MY_CHATS = '''SELECT chat_id FROM (SELECT user_id FROM usser WHERE username='{}') 
+GET_MY_CHATS = '''SELECT chat_id FROM (SELECT user_id FROM usser WHERE username='{}') as users 
                     JOIN user_chat USING(user_id)'''
 GET_CHAT_ID = 'SELECT chat_id FROM chat WHERE chat_id={0}'
 GET_CHATS = 'SELECT * FROM chat'
