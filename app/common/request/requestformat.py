@@ -1,6 +1,6 @@
 import socket
 import app.common.headers as headers
-
+import app.common.misc as misc
 
 class RequestFormat:
     def __init__(self):
@@ -18,18 +18,18 @@ class RequestFormat:
     def build_header_message(self) -> str:
         msg = self.command + '\n'
         for key, value in self._headers.items():
-            msg += key + ': ' + value + '\n'
+            msg += key + misc.HEADER_DELIMETER + value + '\n'
         msg += '\n'
         return msg
 
     def build_structure(self, string: str):
-        lines = string.split('\n')
+        lines = string.split(misc.LINE_END)
         self.command = lines[0]
         for line in lines[1:]:
             if len(line) == 0:
                 continue
-            header = line.split(': ')
-            self[header[0]] = self[header[1]]
+            header = line.split(misc.HEADER_DELIMETER)
+            self[header[0]] = header[1]
 
     def add_message(self, msg: str):
         self.message = msg
