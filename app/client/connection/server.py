@@ -1,10 +1,11 @@
 """
 Module for interacting with the Server
 """
-from app.client.connection.testconnection import Connection
+from app.client.connection.connection import Connection
 from app.common.request.requestformat import RequestFormat
 import app.common.headers as headers
 import app.common.servercommands as cmd
+import app.common.misc as misc
 
 HOST = 'localhost'
 PORT = 5000
@@ -18,8 +19,8 @@ def send_request(conn: Connection, request: RequestFormat) -> None:
 
 def recv_response(conn: Connection) -> RequestFormat:
     response = RequestFormat()
-    response.build_structure(conn.recv_until("\n\n"))
-    response.msg = conn.recv_n_bytes(response[headers.CONTENT_LENGTH])
+    response.build_structure(conn.recv_until(misc.LINE_END))
+    response.msg = conn.recv_n_bytes(int(response[headers.CONTENT_LENGTH]))
     return response
 
 
@@ -49,6 +50,8 @@ class Server:
     def register(self, username: str, password: str):
         conn, request = self.ready_communication()
         request.command = cmd.REGISTER_USER
+        request[headers.USERNAME] = username
+        request[headers.PASSWORD] = password
         send_request(conn, request)
         response = recv_response(conn)
         return response.success
@@ -63,8 +66,8 @@ class Server:
         raise Exception()
 
     def login(self, username: str, password: str) -> str:
-        self.username = ""
-        self.password = ""
+        self.username = username
+        self.password = password
         return self.get_chats()
 
     def create_chat(self) -> int:
