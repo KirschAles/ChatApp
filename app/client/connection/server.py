@@ -19,7 +19,7 @@ def send_request(conn: Connection, request: RequestFormat) -> None:
 
 def recv_response(conn: Connection) -> RequestFormat:
     response = RequestFormat()
-    response.build_structure(conn.recv_until(misc.LINE_END))
+    response.build_structure(conn.recv_until(misc.LINE_END*2))
     response.msg = conn.recv_n_bytes(int(response[headers.CONTENT_LENGTH]))
     return response
 
