@@ -13,4 +13,4 @@ class GetMessages(LoggedRequest):
             raise ValueError('Missing headers')
 
     def execute(self):
-        self.return_message = self.db.get_messages(self.headers[headers.CHAT_ID], self.headers[headers.USERNAME])
+        self.return_message = self.db.get_messages(int(self.headers[headers.CHAT_ID]), self.headers[headers.USERNAME])

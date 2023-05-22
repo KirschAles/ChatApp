@@ -5,19 +5,20 @@ class SafeDatabase:
     def __init__(self, db: Database):
         self.db = db
 
-    def is_password_right(self, username, password) -> bool:
+    def is_password_right(self, username: str, password: str) -> bool:
         return self.db.get_password(username) == password
 
-    def belongs_to_chat(self, username, chat_id) -> bool:
+    def belongs_to_chat(self, username: str, chat_id: int) -> bool:
         # chat's existence must be checked before calling this method
         return (username,) in self.db.get_chat_members(chat_id)
 
-    def is_chat_id_valid(self, chat_id) -> bool:
-        if self.db.get_chat_id(chat_id) == (chat_id,):
+    def is_chat_id_valid(self, chat_id: int) -> bool:
+        chat_id_test = self.db.get_chat_id(chat_id)
+        if chat_id_test == chat_id:
             return True
         return False
 
-    def send_message(self, username, chat_id, message) -> None:
+    def send_message(self, username: str, chat_id: str, message: str) -> None:
         if not self.is_chat_id_valid(chat_id):
             raise ValueError('Invalid chat_id.')
         if not self.belongs_to_chat(username, chat_id):
@@ -29,7 +30,7 @@ class SafeDatabase:
     def create_chat(self, username: str) -> int:
         return self.db.insert_chat(username)
 
-    def add_to_chat(self, adder, chat_id, added) -> None:
+    def add_to_chat(self, adder: str, chat_id: int, added: str) -> None:
         if not self.is_chat_id_valid(chat_id):
             raise ValueError('Invalid chat_id.')
         if not self.belongs_to_chat(adder, chat_id):
@@ -37,10 +38,10 @@ class SafeDatabase:
 
         self.db.insert_user_chat(added, chat_id)
 
-    def create_user(self, username, password) -> None:
+    def create_user(self, username: str, password: str) -> None:
         return self.db.insert_user(username, password)
 
-    def get_messages(self, chat_id, username) -> list:
+    def get_messages(self, chat_id: int, username: str) -> list:
         if not self.is_chat_id_valid():
             raise ValueError('Invalid chat_id.')
         if not self.belongs_to_chat(username, chat_id):
@@ -53,5 +54,5 @@ class SafeDatabase:
     def get_my_chats(self) -> list:
         return self.db.get_my_chats()
 
-    def get_chat_members(self, chat_id) -> list:
+    def get_chat_members(self, chat_id: int) -> list:
         return self.db.get_chat_members(chat_id)

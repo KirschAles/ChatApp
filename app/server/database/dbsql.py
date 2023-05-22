@@ -64,7 +64,8 @@ class Database:
 
     def get_chat(self, chat_id: int) -> list:
         self.cursor.execute(script.GET_CHAT.format(chat_id))
-        return self.cursor.fetchall()
+        info = self.cursor.fetchall()
+        return info
 
     def insert_message(self, chat_id: int, sender_id: int, message: str) -> None:
         self.cursor.execute(script.INSERT_MESSAGE.format(chat_id, sender_id, message))

@@ -15,5 +15,5 @@ class AddToChat(LoggedRequest):
     def execute(self):
         adder = self.headers[headers.USERNAME]
         added = self.headers[headers.TARGET_USERNAME]
-        chat_id = self.headers[headers.CHAT_ID]
+        chat_id = int(self.headers[headers.CHAT_ID])
         self.db.add_to_chat(adder, chat_id, added)

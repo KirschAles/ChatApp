@@ -13,4 +13,4 @@ class CreateChat(LoggedRequest):
             raise ValueError('Missing headers')
 
     def execute(self):
-        self.db.create_chat(self.headers[headers.USERNAME])
+        self.headers_to_send[headers.CHAT_ID] = self.db.create_chat(self.headers[headers.USERNAME])
