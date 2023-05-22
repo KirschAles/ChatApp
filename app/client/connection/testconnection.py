@@ -3,13 +3,8 @@
 """
 
 
-HOST = 'localhost'
-PORT = 5000
-BUFFSIZE = 1024
-
-
 class Connection:
-    def __init__(self, host: str = HOST, port: int = PORT):
+    def __init__(self, host: str, port: int):
         self.remainder = ""
 
     def send(self, msg: str) -> None:
