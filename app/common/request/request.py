@@ -1,6 +1,6 @@
 from typing import TextIO
 import app.common.headers as headers
-
+import app.common.misc as misc
 
 class Request:
     def __init__(self, reader: TextIO):
@@ -11,7 +11,7 @@ class Request:
         self.command = ''
 
     def build_header(self, line: str):
-        header = line.split(':')
+        header = line.split(misc.HEADER_DELIMETER)
         self.headers[header[0]] = header[1].strip()
 
     def build_headers(self):
