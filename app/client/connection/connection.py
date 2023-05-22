@@ -17,36 +17,27 @@ class Connection:
         message_len = len(message)
         bytes_sent = 0
         while bytes_sent < message_len:
-            print(bytes_sent)
             bytes_sent += self._sock.send(message[bytes_sent:])
 
     def recv_until(self, until: str) -> str:
         until_bytes = bytes(until, 'utf-8')
         message = self.remainder
         index = message.find(until_bytes)
-        if index != -1:
-            self.remainder = message[index+len(until_bytes):]
-            return str(message[:index+len(until_bytes)])
 
-        while True:
-            new_part = self._sock.recv(BUFFSIZE)
-            index = new_part.find(until_bytes)
-            if index != -1:
-                message += new_part[:index+len(until_bytes)]
-                self.remainder = new_part[index+len(until_bytes):]
-                break
-            message += new_part
-        return str(message)
+        while index == -1:
+            message += self._sock.recv(BUFFSIZE)
+            index = message.find(until_bytes)
+        self.remainder = message[index + len(until_bytes):]
+        return str(message[:index + len(until_bytes)])
 
     def recv_n_bytes(self, n):
-        message = self.remainder[:min(n, len(self.remainder))]
-
+        message = self.remainder
         while len(message) < n:
             buffer = min(BUFFSIZE, n-len(message))
             message += self._sock.recv(buffer)
 
-        self.remainder = self.remainder[min(len(message), len(self.remainder)):]
-        return str(message)
+        self.remainder = message[n:]
+        return str(message[:n])
 
     @property
     def writer(self):
