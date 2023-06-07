@@ -59,6 +59,7 @@ class MainWindow(QMainWindow):
 
     def register_user(self) -> None:
         if self.register.are_passwords_equal():
+            self.handle_register(self.register.username(), self.register.password())
             self.start_login_window()
         else:
             self.register.clear_password()
