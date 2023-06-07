@@ -22,6 +22,7 @@ class ClientResponse:
     def build_response(self):
         self.message = str(json.dumps(self.headers))
         self.header_string = self.build_header_string(header.CONTENT_LENGTH, len(bytes(self.message, encoding='utf-8')))
+        self.header_string += '\n'*2
 
     def send_response(self):
         self.writer.write(self.command + "\n")
