@@ -2,9 +2,9 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QTextEdit, QButtonGroup, Q
 from app.client.database.conversations import ConvDB
 from app.client.gui.widgets import TextWithButton
 
-class Conversations(QWidget):
 
-    def __init__(self, conv_db: ConvDB = ConvDB('username')):
+class Conversations(QWidget):
+    def __init__(self, conv_db: ConvDB):
         super().__init__()
         self.setLayout(QVBoxLayout())
         self._db = conv_db

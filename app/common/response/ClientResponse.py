@@ -1,9 +1,11 @@
 from typing import TextIO
+import json
+import app.common.headers as header
 
 
 class ClientResponse:
-    def __init__(self, message: list):
-        self.message = message
+    def __init__(self):
+        self.message = None
         self.writer = None
         self.headers = {}
         self.command = ''
@@ -17,20 +19,11 @@ class ClientResponse:
     def build_header_string(key, value):
         return key + ': ' + str(value) + '\n'
 
-    def build_header_strings(self):
-        for key, value in self.headers.items():
-            self.header_string += self.build_header_string(key, value)
-        self.header_string += '\n'
-
-    def build_message(self):
-        for part in self.message:
-            self.final_message += str(part)
-
     def build_response(self):
-        self.build_message()
-        self.build_header_strings()
+        self.message = str(json.dumps(self.headers))
+        self.header_string = self.build_header_string(header.CONTENT_LENGTH, len(bytes(self.message, encoding='utf-8')))
 
     def send_response(self):
         self.writer.write(self.command + "\n")
         self.writer.write(self.header_string)
-        self.writer.write(self.final_message)
+        self.writer.write(self.message)

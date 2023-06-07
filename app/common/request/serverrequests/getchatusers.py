@@ -13,4 +13,4 @@ class GetChatUsers(LoggedRequest):
             raise ValueError('Missing headers')
 
     def execute(self):
-        self.return_message = self.db.get_chat_members(int(self.headers[headers.CHAT_ID]))
+        self.data_to_send.update(self.db.get_chat_members(int(self.headers[headers.CHAT_ID])))

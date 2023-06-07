@@ -1,4 +1,10 @@
 from app.server.database.dbsql import Database
+import app.common.headers as header
+
+
+def message_to_dir(message: list) -> dir:
+    message_dir = {header.SENDER_ID: message[0], header.TIME_SEND: message[1], header.MESSAGE: message[2]}
+    return message_dir
 
 
 class SafeDatabase:
@@ -27,8 +33,9 @@ class SafeDatabase:
                                sender_id=self.db.get_user_id(username),
                                message=message[:1024])
 
-    def create_chat(self, username: str) -> int:
-        return self.db.insert_chat(username)
+    def create_chat(self, username: str) -> dir:
+        chat_dir = {header.CHAT_ID: self.db.insert_chat(username)}
+        return dir
 
     def add_to_chat(self, adder: str, chat_id: int, added: str) -> None:
         if not self.is_chat_id_valid(chat_id):
@@ -38,21 +45,29 @@ class SafeDatabase:
 
         self.db.insert_user_chat(added, chat_id)
 
-    def create_user(self, username: str, password: str) -> None:
-        return self.db.insert_user(username, password)
+    def create_user(self, username: str, password: str) -> dir:
+        user_dir = {header.USER_ID: self.db.insert_user(username, password)}
+        return user_dir
 
-    def get_messages(self, chat_id: int, username: str) -> list:
+    def get_messages(self, chat_id: int, username: str) -> dir:
         if not self.is_chat_id_valid():
             raise ValueError('Invalid chat_id.')
         if not self.belongs_to_chat(username, chat_id):
             raise ValueError('Not in chat.')
-        return self.db.get_chat(chat_id)
+        chat_msgs = self.db.get_chat(chat_id)
+        messages = []
+        for message in chat_msgs:
+            messages.append(message_to_dir(message))
+        return {header.MESSAGES: messages}
 
-    def get_users(self) -> list:
-        return self.db.get_users()
+    def get_users(self) -> dir:
+        users_dir = {header.USERS: self.db.get_users()}
+        return users_dir
 
-    def get_my_chats(self) -> list:
-        return self.db.get_my_chats()
+    def get_my_chats(self) -> dir:
+        chats = {header.CHATS: self.db.get_my_chats()}
+        return chats
 
-    def get_chat_members(self, chat_id: int) -> list:
-        return self.db.get_chat_members(chat_id)
+    def get_chat_members(self, chat_id: int) -> dir:
+        users_dir = {header.USERS: self.db.get_chat_members(chat_id)}
+        return users_dir

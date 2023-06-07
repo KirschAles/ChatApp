@@ -13,4 +13,4 @@ class GetMyChats(LoggedRequest):
             raise ValueError('Missing headers')
 
     def execute(self):
-        self.return_message = self.db.get_my_chats()
+        self.data_to_send.update(self.db.get_my_chats())

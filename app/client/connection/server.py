@@ -6,6 +6,7 @@ from app.common.request.requestformat import RequestFormat
 import app.common.headers as headers
 import app.common.servercommands as cmd
 import app.common.misc as misc
+import json
 
 HOST = 'localhost'
 PORT = 5000
@@ -20,7 +21,7 @@ def send_request(conn: Connection, request: RequestFormat) -> None:
 def recv_response(conn: Connection) -> RequestFormat:
     response = RequestFormat()
     response.build_structure(conn.recv_until(misc.LINE_END*2))
-    response.msg = conn.recv_n_bytes(int(response[headers.CONTENT_LENGTH]))
+    response.message = conn.recv_n_bytes(int(response[headers.CONTENT_LENGTH]))
     return response
 
 
@@ -56,19 +57,24 @@ class Server:
         response = recv_response(conn)
         return response.success
 
-    def get_chats(self) -> str:
+    def get_chats(self) -> dict:
         conn, request = self.ready_communication()
         request.command = cmd.LIST_MY_CHATS
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return response.message
+            return json.loads(response.message)
         raise Exception()
 
-    def login(self, username: str, password: str) -> str:
+    def login(self, username: str, password: str) -> bool:
         self.username = username
         self.password = password
-        return self.get_chats()
+        try:
+            self.get_chats()
+        except Exception:
+            return False
+
+        return True
 
     def create_chat(self) -> int:
         conn, request = self.ready_communication()
@@ -76,7 +82,7 @@ class Server:
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return int(response[headers.CHAT_ID])
+            return int(json.load(response.message)[headers.CHAT_ID])
         raise Exception()
 
     def add_to_chat(self, username: str, chat_id: int) -> bool:
@@ -95,7 +101,7 @@ class Server:
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return int(response[headers.CHAT_ID])
+            return int(json.loads(response.message)[headers.CHAT_ID])
         raise Exception
 
     def send_message(self, chat_id: int, msg: str) -> bool:
@@ -107,33 +113,33 @@ class Server:
         response = recv_response(conn)
         return response.success
 
-    def get_messages(self, chat_id: int) -> str:
+    def get_messages(self, chat_id: int) -> dir:
         conn, request = self.ready_communication()
         request.command = cmd.LIST_MESSAGES_IN_CHAT
         request[headers.CHAT_ID] = str(chat_id)
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return response.message
+            return json.loads(response.message)
         raise Exception
 
-    def get_users(self) -> str:
+    def get_users(self) -> dir:
         conn, request = self.ready_communication()
         request.command = cmd.LIST_USERS
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return response.message
+            return json.loads(response.message)
         raise Exception
 
-    def get_user_in_chat(self, chat_id: int):
+    def get_user_in_chat(self, chat_id: int) -> dir:
         conn, request = self.ready_communication()
         request.command = cmd.LIST_USERS_IN_CHAT
         request[headers.CHAT_ID] = str(chat_id)
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return response.message
+            return json.loads(response.message)
         raise Exception
 
 

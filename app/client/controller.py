@@ -13,11 +13,11 @@ from app.client.connection.server import Server
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, conv_db: ConvDB):
+    def __init__(self):
         super(MainWindow, self).__init__()
-        self.conv_db = conv_db
-        self.conversations = Conversations(self.conv_db)
         self.server = Server()
+        self.conv_db = ConvDB(self.server)
+        self.conversations = Conversations(self.conv_db)
         self.login = None
         self.register = None
         self.start_login_window()
@@ -42,7 +42,6 @@ class MainWindow(QMainWindow):
     def login_user(self):
         username = self.login.username
         password = self.login.password
-        self.conv_db = ConvDB(username, password)
         self.handle_login(username, password)
         self.start_conversations_window()
 
@@ -67,7 +66,6 @@ class MainWindow(QMainWindow):
 
 app = QApplication(sys.argv)
 
-conv_db = ConvDB('username')
-window = MainWindow(conv_db)
+window = MainWindow()
 window.show()
 app.exec()

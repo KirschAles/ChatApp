@@ -1,6 +1,8 @@
 import socket
 import app.common.headers as headers
 import app.common.misc as misc
+import app.common.clientcommands as cmd
+
 
 class RequestFormat:
     def __init__(self):
@@ -37,7 +39,7 @@ class RequestFormat:
 
     @property
     def success(self):
-        return self.command != 'BAD'
+        return self.command != cmd.BAD
 
     @property
     def message_length(self) -> int:

@@ -1,18 +1,17 @@
 from app.client.database.chat import ChatDB
+from app.client.connection.server import Server
 
 
 class ConvDB:
-    def __init__(self, username: str = '', password: str = ''):
+    def __init__(self, server: Server):
         self._chats = {}
-        self._username = username
-        self._password = password
+        self._server = server
 
     def __getitem__(self, id: int):
         return self._chats[id]
 
     def __setitem__(self, id: int, users: list):
-        self._chats[id] = ChatDB(id)
-        self._chats[id].add_user(self.username)
+        self._chats[id] = ChatDB(id, self._server)
         for user in users:
             self._chats[id].add_user(user)
 
@@ -20,12 +19,12 @@ class ConvDB:
         return self._chats.values().__iter__()
 
     def next_id(self) -> int:
-        return len(self._chats)
+        return self._server.create_chat()
 
     @property
     def username(self):
-        return self._username
+        return self._server.username
 
     @property
     def password(self):
-        return self._password
+        return self._server.password

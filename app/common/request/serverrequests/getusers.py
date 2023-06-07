@@ -13,4 +13,4 @@ class GetUsers(LoggedRequest):
             raise ValueError('Missing headers')
 
     def execute(self):
-        self.return_message = self.db.get_users()
+        self.data_to_send.update(self.db.get_users())

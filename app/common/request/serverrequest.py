@@ -17,7 +17,7 @@ class ServerRequest(request.Request):
         self.db = db
         self.build_request()
 
-        self.headers_to_send = {}
+        self.data_to_send = {}
         if not self.has_all_headers():
             raise ValueError('Header missing.')
 
@@ -31,8 +31,8 @@ class ServerRequest(request.Request):
         pass
 
     def send_response(self):
-        response = Response(self.reader, self.return_message)
+        response = Response(self.reader)
         response.command = OK
-        response.headers = self.headers_to_send.copy()
+        response.headers = self.data_to_send
         response.build_response()
         response.send_response()
