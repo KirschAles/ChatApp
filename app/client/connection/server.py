@@ -91,7 +91,7 @@ class Server:
         send_request(conn, request)
         response = recv_response(conn)
         if response.success:
-            return int(json.load(response.message)[headers.CHAT_ID])
+            return int(json.loads(response.message)[headers.CHAT_ID])
         raise Exception()
 
     def add_to_chat(self, username: str, chat_id: int) -> bool:
