@@ -35,7 +35,7 @@ class SafeDatabase:
 
     def create_chat(self, username: str) -> dir:
         chat_dir = {header.CHAT_ID: self.db.insert_chat(username)}
-        return dir
+        return chat_dir
 
     def add_to_chat(self, adder: str, chat_id: int, added: str) -> None:
         if not self.is_chat_id_valid(chat_id):
