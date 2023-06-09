@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.server = Server()
         self.conv_db = ConvDB(self.server)
-        self.conversations = Conversations(self.conv_db)
+        self.conversations = None
         self.login = None
         self.register = None
         self.start_login_window()
@@ -29,7 +29,9 @@ class MainWindow(QMainWindow):
         return self.server.register(username, password)
 
     def start_conversations_window(self):
+        print("start conversation window")
         self.conversations = Conversations(self.conv_db)
+        print("conversation window started")
         self.setCentralWidget(self.conversations)
         self.conversations.chat_buttons.buttonClicked.connect(self.start_chat_window)
 
@@ -65,8 +67,13 @@ class MainWindow(QMainWindow):
             self.register.clear_password()
 
 
-app = QApplication(sys.argv)
+def main():
+    app = QApplication(sys.argv)
 
-window = MainWindow()
-window.show()
-app.exec()
+    window = MainWindow()
+    window.show()
+    app.exec()
+
+
+if __name__ == '__main__':
+    main()

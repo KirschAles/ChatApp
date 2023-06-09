@@ -1,7 +1,7 @@
 """
 Module for interacting with the Server
 """
-from app.client.connection.connection import Connection
+from app.client.connection.connection import ClientConnection as Connection
 from app.common.request.requestformat import RequestFormat
 import app.common.headers as headers
 import app.common.servercommands as cmd
@@ -20,8 +20,13 @@ def send_request(conn: Connection, request: RequestFormat) -> None:
 
 def recv_response(conn: Connection) -> RequestFormat:
     response = RequestFormat()
+    print("init")
     response.build_structure(conn.recv_until(misc.LINE_END*2))
+    print("structure")
     response.message = conn.recv_n_bytes(int(response[headers.CONTENT_LENGTH]))
+    print("message")
+    print(response[headers.CONTENT_LENGTH])
+    print(response.message)
     return response
 
 
@@ -53,8 +58,12 @@ class Server:
         request.command = cmd.REGISTER_USER
         request[headers.USERNAME] = username
         request[headers.PASSWORD] = password
+        print("usernam:",username)
+        print("password:",password)
         send_request(conn, request)
+        print('here')
         response = recv_response(conn)
+        print("response here")
         return response.success
 
     def get_chats(self) -> dict:

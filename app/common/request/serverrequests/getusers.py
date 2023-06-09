@@ -7,7 +7,7 @@ import app.common.headers as headers
 class GetUsers(LoggedRequest):
     headers_needed = []
 
-    def __init__(self, reader: TextIO, db: SafeDatabase):
+    def __init__(self, reader, db: SafeDatabase):
         super().__init__(reader, db)
         if not self.has_all_headers():
             raise ValueError('Missing headers')

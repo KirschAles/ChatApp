@@ -11,15 +11,17 @@ class ConvDB:
         return self._chats[id]
 
     def __setitem__(self, id: int, users: list):
-        self._chats[id] = ChatDB(id, self._server)
+
         for user in users:
             self._chats[id].add_user(user)
 
     def __iter__(self):
         return self._chats.values().__iter__()
 
-    def next_id(self) -> int:
-        return self._server.create_chat()
+    def create_chat(self) -> int:
+        chat_id = self._server.create_chat()
+        self._chats[id] = ChatDB(chat_id, self._server)
+        return chat_id
 
     @property
     def username(self):
@@ -28,3 +30,7 @@ class ConvDB:
     @property
     def password(self):
         return self._server.password
+
+    def update(self):
+        chats = self._server.get_chats()
+        print(chats)

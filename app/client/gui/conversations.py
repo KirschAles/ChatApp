@@ -16,7 +16,7 @@ class Conversations(QWidget):
         self.load_chats()
 
     def new_conversation(self):
-        new_id = self._db.next_id() # temprorary, will later be found by request to server
+        new_id = self._db.create_chat() # temprorary, will later be found by request to server
         self._db[new_id] = [self.add_conv.text()]
         self.add_conv.clear()
         self.update_widget(new_id)
@@ -28,6 +28,7 @@ class Conversations(QWidget):
         self._conv_widgets[chat_id] = button
 
     def load_chats(self):
+        self._db.update()
         for chat in self._db:
             button = QPushButton(str(chat.users))
             self.layout().addWidget(button)

@@ -9,7 +9,7 @@ class RequestFormat:
         self.command = ''
         self._headers = {}
         self.message = ''
-        self[headers.CONTENT_LENGTH] = str(len(self.message))
+        self[headers.CONTENT_LENGTH] = str(len(bytes(self.message, encoding='utf-8')))
 
     def __setitem__(self, key: str, value: str):
         self._headers[key] = value
@@ -18,10 +18,10 @@ class RequestFormat:
         return self._headers[item]
 
     def build_header_message(self) -> str:
-        msg = self.command + '\n'
+        msg = self.command + misc.LINE_END
         for key, value in self._headers.items():
-            msg += key + misc.HEADER_DELIMETER + value + '\n'
-        msg += '\n'
+            msg += key + misc.HEADER_DELIMETER + value + misc.LINE_END
+        msg += misc.LINE_END
         return msg
 
     def build_structure(self, string: str):
@@ -35,7 +35,7 @@ class RequestFormat:
 
     def add_message(self, msg: str):
         self.message = msg
-        self[headers.CONTENT_LENGTH] = str(len(msg))
+        self[headers.CONTENT_LENGTH] = str(len(bytes(msg, encoding='utf-8')))
 
     @property
     def success(self):
