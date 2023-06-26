@@ -7,20 +7,19 @@ class ConvDB:
         self._chats = {}
         self._server = server
 
-    def __getitem__(self, id: int):
-        return self._chats[id]
+    def __getitem__(self, chat_id: int):
+        return self._chats[chat_id]
 
-    def __setitem__(self, id: int, users: list):
-
+    def __setitem__(self, chat_id: int, users: list):
         for user in users:
-            self._chats[id].add_user(user)
+            self._chats[chat_id].add_user(user)
 
     def __iter__(self):
         return self._chats.values().__iter__()
 
     def create_chat(self) -> int:
         chat_id = self._server.create_chat()
-        self._chats[id] = ChatDB(chat_id, self._server)
+        self._chats[chat_id] = ChatDB(chat_id, self._server)
         return chat_id
 
     @property
