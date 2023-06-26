@@ -50,7 +50,7 @@ class SafeDatabase:
         return user_dir
 
     def get_messages(self, chat_id: int, username: str) -> dir:
-        if not self.is_chat_id_valid():
+        if not self.is_chat_id_valid(chat_id):
             raise ValueError('Invalid chat_id.')
         if not self.belongs_to_chat(username, chat_id):
             raise ValueError('Not in chat.')
